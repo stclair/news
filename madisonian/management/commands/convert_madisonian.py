@@ -1,7 +1,10 @@
+import datetime
 import re
 
 from django.core.management.base import BaseCommand, CommandError
+from django.contrib.sites import models as sites_models
 
+from armstrong.apps.articles import models as article_models
 from armstrong.core.arm_sections import models as section_models
 
 from madisonian import models as mad_models
@@ -17,16 +20,41 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.clear_tables()
         self.convert_sections()
-
+        self.convert_articles()
 
     def convert_sections(self):
         for section in mad_models.Sections.objects.all().order_by('priority'):
             slug = re.sub(r"\W", "", section.section.lower())
             section_models.Section.objects.create(title=section.section, slug=slug)
 
+    def convert_articles(self):
+        pass
+        for news in mad_models.News.objects.filter(issue_date__gt=datetime.date(2011,12,31)):
+            slug = re.sub(r"\W", "", news.caption.lower())
+            pub_date = datetime.datetime.strptime("%s 00:00:00" % news.issue_date, "%Y-%m-%d %H:%M:%S")
+            #print dir(article_models.Article())
+            article = article_models.Article(title=news.caption,
+                                             slug=slug[:50],
+                                             summary=news.preview,
+                                             body=news.full_story,
+                                             pub_date=pub_date,
+                                             pub_status='P',)
+            article.save()
+            article.sites.add(sites_models.Site.objects.all()[0])
+            article.save()
+
 
     def clear_tables(self):
+        self.clear_sites()
         self.clear_sections()
+        self.clear_articles()
+
+    def clear_sites(self):
+        sites_models.Site.objects.all().delete()
+        sites_models.Site.objects.create(domain='wintersetmadisonian.com', name='wintersetmadisonian.com')
 
     def clear_sections(self):
         section_models.Section.objects.all().delete()
+
+    def clear_articles(self):
+        article_models.Article.objects.all().delete()
