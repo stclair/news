@@ -132,6 +132,8 @@ INSTALLED_APPS = (
     'reversion',
     'mptt',
     'taggit',
+
+    'madisonian',
 )
 
 ARMSTRONG_SECTION_ITEM_MODEL = 'armstrong.apps.content.models.Content'
