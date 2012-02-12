@@ -53,7 +53,7 @@ class News(models.Model):
         db_table = u'news'
 
 class Sections(models.Model):
-    section = models.CharField(max_length=60)
+    section = models.CharField(max_length=60, primary_key=True)
     parent_child = models.CharField(max_length=3, blank=True)
     free = models.CharField(max_length=3, blank=True)
     priority = models.IntegerField(null=True, blank=True)
