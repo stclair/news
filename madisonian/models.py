@@ -67,13 +67,6 @@ class Session(models.Model):
     class Meta:
         db_table = u'session'
 
-class TaggitTag(models.Model):
-    id = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=300)
-    slug = models.CharField(unique=True, max_length=300)
-    class Meta:
-        db_table = u'taggit_tag'
-
 class Users(models.Model):
     user_id = models.CharField(max_length=60)
     user_password = models.CharField(max_length=60)
