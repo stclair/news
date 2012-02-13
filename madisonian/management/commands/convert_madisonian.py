@@ -24,7 +24,7 @@ class Command(BaseCommand):
 
     def convert_sections(self):
         for section in mad_models.Sections.objects.all().order_by('priority'):
-            slug = re.sub(r"\W", "", section.section.lower())
+            slug = self.slugify(section.section)
             section_models.Section.objects.create(title=section.section, slug=slug)
 
     def convert_articles(self):
@@ -41,6 +41,7 @@ class Command(BaseCommand):
                                              pub_status='P',)
             article.save()
             article.sites.add(sites_models.Site.objects.all()[0])
+            article.sections.add(section_models.Section.objects.get(full_slug=self.slugify(news.section)))
             article.save()
 
 
@@ -58,3 +59,6 @@ class Command(BaseCommand):
 
     def clear_articles(self):
         article_models.Article.objects.all().delete()
+
+    def slugify(self, words):
+        return re.sub(r"\W", "", words.lower())
