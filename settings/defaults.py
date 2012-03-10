@@ -125,6 +125,7 @@ INSTALLED_APPS = (
     'armstrong.core.arm_wells',
     'armstrong.apps.articles',
     'armstrong.apps.content',
+    'armstrong.apps.images',
     'armstrong.apps.related_content',
     'armstrong.hatband',
 
