@@ -35,7 +35,7 @@ urlpatterns = patterns('',
     url(r'^$',
             QuerySetBackedWellView.as_view(well_title='front_page',
                                            template_name="front_page.html",
-                                           queryset=Article.published.all(),
+                                           queryset=Article.published.all().order_by('-pub_date'),
                                     ),
             name='front_page'),
 
