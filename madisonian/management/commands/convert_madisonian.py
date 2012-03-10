@@ -18,6 +18,7 @@ from madisonian import models as mad_models
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
+        self.slug_ctr = 0
         self.clear_tables()
         self.convert_sections()
         self.convert_articles()
@@ -31,8 +32,14 @@ class Command(BaseCommand):
         pass
         for news in mad_models.News.objects.filter(issue_date__gt=datetime.date(2011,12,31)):
             slug = re.sub(r"\W", "", news.caption.lower())
+            if not slug:
+                slug = self.junk_slug()
+            try:
+                article_models.Article.objects.get(slug=slug)
+                slug = self.junk_slug()
+            except article_models.Article.DoesNotExist:
+                pass
             pub_date = datetime.datetime.strptime("%s 00:00:00" % news.issue_date, "%Y-%m-%d %H:%M:%S")
-            #print dir(article_models.Article())
             article = article_models.Article(title=news.caption,
                                              slug=slug[:50],
                                              summary=news.preview,
@@ -51,8 +58,10 @@ class Command(BaseCommand):
         self.clear_articles()
 
     def clear_sites(self):
-        sites_models.Site.objects.all().delete()
-        sites_models.Site.objects.create(domain='wintersetmadisonian.com', name='wintersetmadisonian.com')
+        site = sites_models.Site.objects.all()[0]
+        site.domain='wintersetmadisonian.com'
+        site.name='wintersetmadisonian.com'
+        site.save()
 
     def clear_sections(self):
         section_models.Section.objects.all().delete()
@@ -62,3 +71,7 @@ class Command(BaseCommand):
 
     def slugify(self, words):
         return re.sub(r"\W", "", words.lower())
+
+    def junk_slug(self):
+        self.slug_ctr += 1
+        return str(self.slug_ctr)
