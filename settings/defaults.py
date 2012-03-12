@@ -161,3 +161,6 @@ LOGGING = {
         },
     }
 }
+
+TEMPLATE_CONTEXT_PROCESSORS = ('madisonian.context.mad_sections',
+                               'django.contrib.auth.context_processors.auth',)

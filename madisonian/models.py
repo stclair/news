@@ -1,3 +1,24 @@
+import datetime
+
+from django.db import models
+
+from armstrong.core.arm_sections import models as arm_sections_models
+
+class MadSectionManager(models.Manager):
+    def get_active_sections(self):
+        sections = []
+        for section in self.all():
+            if section.content_content_alternates.filter(pub_date__gte=datetime.date.today() - datetime.timedelta(2*365/12)):
+                sections.append(section)
+        return sections
+
+class MadSection(arm_sections_models.Section):
+    objects = MadSectionManager()
+
+    class Meta:
+        proxy = True
+
+# BELOW:
 # This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
 #     * Rearrange models' order
@@ -6,8 +27,6 @@
 #
 # Also note: You'll have to insert the output of 'django-admin.py sqlcustom [appname]'
 # into your database.
-
-from django.db import models
 
 class Ads(models.Model):
     ad_id = models.IntegerField(primary_key=True)
