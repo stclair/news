@@ -17,7 +17,7 @@
     <div>
         {% block sidemenu %}
         <a href='{% url front_page %}'>Home</a>
-        {% section_menu section_view='section_view' sections=mad_sections %}
+        {% section_menu section_view='section_view' sections=mad_sections template='navigation/sections.html' %}
         {% endblock %}
     </div>
     <div>
