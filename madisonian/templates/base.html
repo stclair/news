@@ -1,25 +1,12 @@
 {% load section_helpers %}
-<!doctype html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-
-    <title>Your New Armstrong Project</title>
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <title>Winterset Madisonian</title>
 </head>
-<link href="{{ STATIC_URL }}bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <body>
-    <header>
-        {% block header %}
-            <h1>Welcome to Armstrong!</h1>
-        {% endblock %}
-    </header>
-    <div>
-        {% block sidemenu %}
-        <a href='{% url front_page %}'>Home</a>
-        {% section_menu section_view='section_view' sections=mad_sections template='navigation/sections.html' %}
-        {% endblock %}
-    </div>
+    {% section_menu section_view='section_view' sections=mad_sections template='navigation/sections.html' %}
     <div>
         {% block content %}
         {% endblock %}
