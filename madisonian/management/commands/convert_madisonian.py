@@ -6,6 +6,7 @@ from django.contrib.sites import models as sites_models
 
 from armstrong.apps.articles import models as article_models
 from armstrong.core.arm_sections import models as section_models
+from armstrong.core.arm_wells import models as well_models
 
 from madisonian import models as mad_models
 
@@ -22,6 +23,7 @@ class Command(BaseCommand):
         self.clear_tables()
         self.convert_sections()
         self.convert_articles()
+        self.add_well()
 
     def convert_sections(self):
         for section in mad_models.Sections.objects.all().order_by('priority'):
@@ -75,3 +77,7 @@ class Command(BaseCommand):
     def junk_slug(self):
         self.slug_ctr += 1
         return str(self.slug_ctr)
+
+    def add_well(self):
+        type = well_models.WellType.objects.create(title='front_page', slug='front_page')
+        well_models.Well.objects.create(pub_date=datetime.datetime.now(), type=type)

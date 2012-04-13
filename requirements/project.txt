@@ -6,3 +6,4 @@ armstrong==11.09.0
 
 # My stuff...
 mysql-python
+South

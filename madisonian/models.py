@@ -8,7 +8,7 @@ class MadSectionManager(models.Manager):
     def get_active_sections(self):
         sections = []
         for section in self.all():
-            if section.content_content_alternates.filter(pub_date__gte=datetime.date.today() - datetime.timedelta(2*365/12)):
+            if section.content_content_alternates.filter(pub_date__gte=datetime.date.today() - datetime.timedelta(6*365/12)):
                 sections.append(section)
         return sections
 

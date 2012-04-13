@@ -134,6 +134,8 @@ INSTALLED_APPS = (
     'mptt',
     'taggit',
 
+    'south',
+
     'madisonian',
 )
 
